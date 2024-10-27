@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craft-Chain</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --risd-blue: #5151FFff;
+            --flax: #FBEA91ff;
+            --eerie-black: #1C1A1Aff;
+            --coral-pink: #FE8579ff;
+            --tea-green: #D2E6A8ff;
+        }
+
+        body {
+            font-family: "Pirata One", system-ui;
+            margin: 0;
+            background-color: var(--eerie-black);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            z-index: -1;
+        }
+
+        video {
+            width: 33.33%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            height: 100px;
+        }
+
+        .title-button {
+            font-size: 50px;
+            background: none;
+            border: none;
+            color: var(--risd-blue);
+            cursor: pointer;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, color 0.3s ease;
+            font-family: "Pirata One", system-ui;
+            padding: 20px 50px;
+            border-radius: 15px;
+            z-index: 2;
+            letter-spacing: 1px;
+        }
+
+        .side-buttons {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-20%);
+            display: flex;
+            flex-direction: column;
+            z-index: 2;
+        }
+
+        .left-buttons {
+            left: 20px;
+        }
+
+        .right-buttons {
+            right: 20px;
+        }
+
+        .side-buttons button {
+            background-color: var(--coral-pink);
+            color: var(--eerie-black);
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            margin: 10px 0;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            transition: background-color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .side-buttons button:hover {
+            background-color: var(--flax);
+        }
+
+        .container-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 25px;
+            gap: 40px;
+            height: calc(100vh - 150px);
+            padding: 30px;
+            overflow: hidden;
+            scroll-behaviour: smooth;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            height: 50vh;
+            gap: 20px;
+            justify-content: flex-start;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .box {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            width: 15vw;
+            height: 100%;
+            border-radius: 25px;
+            transition: transform 0.5s ease;
+        }
+
+        .box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <video autoplay muted loop>
+            <source src="media/chain animation.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <video autoplay muted loop>
+            <source src="media/chain animation.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <video autoplay muted loop>
+            <source src="media/chain animation.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <header>
+        <button class="title-button" id="titleButton">Craft-Chain</button>
+    </header>
+
+    <div class="side-buttons left-buttons">
+        <button><span class="material-icons">home</span></button>
+        <button><span class="material-icons">search</span></button>
+    </div>
+    
+    <div class="side-buttons right-buttons">
+        <button><span class="material-icons">add</span></button>
+        <button><span class="material-icons">account_circle</span></button>
+    </div>
+
+    <div class="container-wrapper" id="wrapper">
+        <div class="container" id="imageContainer1"></div>
+        <div class="container" id="imageContainer2"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const container1 = $('#imageContainer1');
+        const container2 = $('#imageContainer2');
+        const wrapper = $('#wrapper');
+        let offset = 0;
+        const imagesPerLoad = 10; 
+        const totalImages = 40;
+
+        const imageSources = [
+            'media/images/image1.jpg',
+            'media/images/image2.jpg',
+            // Add remaining image paths here...
+        ];
+
+        function loadImages() {
+            const initialImages1 = imageSources.slice(0, imagesPerLoad);
+            const initialImages2 = imageSources.slice(imagesPerLoad, imagesPerLoad * 2);
+
+            initialImages1.forEach(source => {
+                const box = $('<div class="box"></div>');
+                const img = $('<img>').attr('src', source).attr('alt', 'Local Image');
+                box.append(img);
+                container1.append(box);
+            });
+
+            initialImages2.forEach(source => {
+                const box = $('<div class="box"></div>');
+                const img = $('<img>').attr('src', source).attr('alt', 'Local Image');
+                box.append(img);
+                container2.append(box);
+            });
+        }
+
+        loadImages();
+
+        wrapper.on('wheel', (event) => {
+            if (event.originalEvent.deltaY > 0) {
+                loadImagesRight();
+            } else {
+                loadImagesLeft();
+            }
+            event.preventDefault();
+        });
+
+        function loadImagesRight() {
+            const imagesToShow = imageSources.slice(offset + imagesPerLoad, offset + imagesPerLoad * 2);
+            imagesToShow.forEach(source => {
+                const box = $('<div class="box"></div>');
+                const img = $('<img>').attr('src', source).attr('alt', 'Local Image');
+                box.append(img);
+                container2.append(box);
+            });
+            offset += imagesPerLoad;
+        }
+
+        function loadImagesLeft() {
+            const imagesToShow = imageSources.slice(offset - imagesPerLoad, offset);
+            imagesToShow.forEach(source => {
+                const box = $('<div class="box"></div>');
+                const img = $('<img>').attr('src', source).attr('alt', 'Local Image');
+                box.prepend(img);
+                container1.prepend(box);
+            });
+            offset -= imagesPerLoad;
+        }
+
+        // Redirect on title button click
+       $('#titleButton').on('click', () => {
+        window.location.href = './imageviewer.html'; // Replace with the correct file name if different
+}      );
+
+        });
+    </script>
+</body>
+</html>
+
+
